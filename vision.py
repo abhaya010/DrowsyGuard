@@ -3,6 +3,9 @@ import numpy as np
 import dlib
 from imutils import face_utils
 from scipy.spatial import distance as dist
+from playsound import playsound
+
+
 
 # Initialize the camera
 cap = cv2.VideoCapture(0)
@@ -27,6 +30,12 @@ eye_closed = False
 blink_detected = False
 mouth_open = False
 yawn_detected = False
+
+#to play sound when drowsy and sleepy
+sound="./alert.wav"
+
+def play_sound():
+    playsound(sound)
 
 def compute(ptA, ptB):
     return np.linalg.norm(ptA - ptB)
@@ -102,21 +111,23 @@ while True:
             drowsy = 0
             active = 0
             if sleep > 6:
-                status = "SLEEPING !!!"
+                status = "SLEEPING "
                 color = (255, 0, 0)
+                play_sound()
         elif left_blink == 1 or right_blink == 1:
             sleep = 0
             active = 0
             drowsy += 1
             if drowsy > 6:
-                status = "Drowsy !"
+                status = "Drowsy "
                 color = (0, 0, 255)
+                play_sound()
         else:
             drowsy = 0
             sleep = 0
             active += 1
             if active > 6:
-                status = "Active :)"
+                status = "Active "
                 color = (0, 255, 0)
 
         # Display status and counts
