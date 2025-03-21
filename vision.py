@@ -195,12 +195,14 @@ def main():
             # Yawn detection
             if mar > YAWN_THRESHOLD:
                 consecutive_yawn += 1
-                if consecutive_yawn >= 3 and not mouth_open:
-                    yawn_count += 1
-                    mouth_open = True
+            if consecutive_yawn >= 3 and not mouth_open:
+                yawn_count += 1
+                mouth_open = True
+            elif mar <= YAWN_THRESHOLD and mouth_open:
+                mouth_open = False
+                consecutive_yawn = 0
             else:
                 consecutive_yawn = 0
-                mouth_open = False
             
             # Determine drowsiness state
             if ear < EYE_AR_THRESHOLD * 0.8:  # More strict threshold for sleep detection
